@@ -29,12 +29,21 @@ namespace Project3
             {
                 if (frontend == 1)
                 {
-                    WriteLine("Are you adding an item or editing an item? Press 1 for add and 2 for edit");
+                    WriteLine("Are you editing and existing item or adding a new one? Press 1 for editing, 2 for adding, and 3 to exit");
                     admin = Convert.ToInt32(ReadLine());
                     if (admin == 1)
+                    {
+                        administratorUpdate(ref menu);
+                    }
+                    else if (admin == 2)
+                    {
                         administratorAdd(ref menu);
+                    }
                     else
-                        administartorEdit(ref order);
+                    {
+                        WriteLine("Exiting Program...");
+                        break;
+                    }
                 }
                 else
                 {
@@ -45,6 +54,10 @@ namespace Project3
                     {
                         WriteLine("That was an incorrect input, please input 'Y' to place another order or 'N' if you are done with your order");
                         userLoop = ReadLine();
+                        if (userLoop == "1234")
+                        {
+                            administartorOverride(ref order);
+                        }
                     }
                 }
             }
@@ -81,22 +94,33 @@ namespace Project3
             ReadKey();
         }
         //placeholder admin method
+        static void administratorUpdate(ref List<Menu> n)
+        {
+            string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
+            string[] lines = System.IO.File.ReadAllLines(location);
+            var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
+            foreach (Menu x in menuList)
+            {
+                WriteLine("{0,5}", $"{x.menuID}\t{x.menuName}\t{x.menuPrice}");
+            }
+
+        }
+
         static void administratorAdd(ref List<Menu> n)
         {
-            string[] newItem = new string [3];
+            string[] newItem = new string[3];
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
-            var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
+            WriteLine("Which item would you like to update?");
 
             WriteLine("First enter the ID, then name and lastly the price of the item in that order");
             for (int z = 0; z < newItem.Length; z++)
             {
-             newItem[z] = ReadLine();
+                newItem[z] = ReadLine();
             }
-                
             try
             {
                 StreamWriter writer = new StreamWriter(location, true);
-                writer.WriteLine(newItem[0] + "," + newItem [1] + "," + newItem[2]);
+                writer.WriteLine(newItem[0] + "," + newItem[1] + "," + newItem[2]);
                 writer.Dispose();
                 WriteLine("Item added");
             }
@@ -106,7 +130,7 @@ namespace Project3
             }
         }
 
-        static void administartorEdit(ref List<Orders> i)
+        static void administartorOverride(ref List<Orders> i)
         {
 
         }
