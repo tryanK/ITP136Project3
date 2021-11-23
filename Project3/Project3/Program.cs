@@ -96,13 +96,19 @@ namespace Project3
         //placeholder admin method
         static void administratorUpdate(ref List<Menu> n)
         {
+            string userInput;
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
             string[] lines = System.IO.File.ReadAllLines(location);
             var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
+
+            WriteLine("{0,1}{1,10}{2,8}", "ID", "NAME", "PRICE");
             foreach (Menu x in menuList)
             {
                 WriteLine("{0,5}", $"{x.menuID}\t{x.menuName}\t{x.menuPrice}");
             }
+            WriteLine("Which item do you wish to update?");
+            userInput = ReadLine();
+
 
         }
 
@@ -110,7 +116,6 @@ namespace Project3
         {
             string[] newItem = new string[3];
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
-            WriteLine("Which item would you like to update?");
 
             WriteLine("First enter the ID, then name and lastly the price of the item in that order");
             for (int z = 0; z < newItem.Length; z++)
@@ -132,7 +137,8 @@ namespace Project3
 
         static void administartorOverride(ref List<Orders> i)
         {
-
+            foreach(Orders in i)
+            WriteLine("Which customer are you needing to edit");
         }
         
         //method to determine if it is a customer or a admin attempting to login
