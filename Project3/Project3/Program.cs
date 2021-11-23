@@ -15,6 +15,8 @@ namespace Project3
         {
             //declaring and intializing variables and the Orders list
             List<Orders> order = new List<Orders>();
+            List<Menu> menu = new List<Menu>();
+            int admin;
             string burgerMessage;
             string fryMessage;
             string shakeMessage;
@@ -27,7 +29,12 @@ namespace Project3
             {
                 if (frontend == 1)
                 {
-                    administratorMethod();
+                    WriteLine("Are you adding an item or editing an item? Press 1 for add and 2 for edit");
+                    admin = Convert.ToInt32(ReadLine());
+                    if (admin == 1)
+                        administratorAdd(ref menu);
+                    else
+                        administartorEdit(ref order);
                 }
                 else
                 {
@@ -74,19 +81,36 @@ namespace Project3
             ReadKey();
         }
         //placeholder admin method
-        static void administratorMethod()
+        static void administratorAdd(ref List<Menu> n)
         {
-            int itemCheck;
+            string[] newItem = new string [3];
+            string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
+            var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
 
-            WriteLine("Do you wish to edit an existing item or add a new one, Press 1 for edit and 2 for add");
-            itemCheck = Convert.ToInt32(ReadLine());
-
-            switch (itemCheck)
+            WriteLine("First enter the ID, then name and lastly the price of the item in that order");
+            for (int z = 0; z < newItem.Length; z++)
             {
-
+             newItem[z] = ReadLine();
+            }
+                
+            try
+            {
+                StreamWriter writer = new StreamWriter(location, true);
+                writer.WriteLine(newItem[0] + "," + newItem [1] + "," + newItem[2]);
+                writer.Dispose();
+                WriteLine("Item added");
+            }
+            catch (Exception i)
+            {
+                WriteLine(i);
             }
         }
 
+        static void administartorEdit(ref List<Orders> i)
+        {
+
+        }
+        
         //method to determine if it is a customer or a admin attempting to login
         public static int loginMethod()
         {

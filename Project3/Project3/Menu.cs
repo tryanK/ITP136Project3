@@ -8,6 +8,12 @@ namespace Project3
 {
     class Menu
     {
+        public Menu(int x, string n, double p)
+        {
+            x = menuID;
+            n = menuName;
+            p = menuPrice;
+        }
         public Menu(string line)
         {
             var split = line.Split(',');
