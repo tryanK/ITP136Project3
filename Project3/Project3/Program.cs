@@ -17,6 +17,7 @@ namespace Project3
             List<Orders> order = new List<Orders>();
             List<Menu> menu = new List<Menu>();
             int admin;
+            int edit;
             string burgerMessage;
             string fryMessage;
             string shakeMessage;
@@ -54,14 +55,19 @@ namespace Project3
                     {
                         WriteLine("That was an incorrect input, please input 'Y' to place another order or 'N' if you are done with your order");
                         userLoop = ReadLine();
-                        if (userLoop == "1234")
-                        {
-                            administartorOverride(ref order);
-                        }
                     }
+                   
                 }
             }
 
+            WriteLine("Is the order correct? 1 for yes and 2 for no");
+            edit = Convert.ToInt32(ReadLine());
+
+            if(edit == 2)
+            {
+                administartorOverride(ref order);
+            }
+            
             //cycling through each of the orders that have been givin, allow the corresponding message to display along with the amount they ordered and their total cost
             foreach (Orders i in order)
             {
@@ -93,12 +99,14 @@ namespace Project3
 
             ReadKey();
         }
-        //placeholder admin method
+
         static void administratorUpdate(ref List<Menu> n)
         {
             string userInput;
+            string newPrice;
+            List<String> lines = new List<String>();
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
-            string[] lines = System.IO.File.ReadAllLines(location);
+            string[] linedata = System.IO.File.ReadAllLines(location);
             var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
 
             WriteLine("{0,1}{1,10}{2,8}", "ID", "NAME", "PRICE");
@@ -106,12 +114,47 @@ namespace Project3
             {
                 WriteLine("{0,5}", $"{x.menuID}\t{x.menuName}\t{x.menuPrice}");
             }
-            WriteLine("Which item do you wish to update?");
+            WriteLine("Which ID would you like to update the price of?");
             userInput = ReadLine();
+            try
+            {
+                //cycle thorugh the csv and find the intended id location to edit the pricing on the desired item
+                if (File.Exists(location))
+                {
+                    using (StreamReader reader = new StreamReader(location))
+                    {
+                        String line;
 
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            if (line.Contains(","))
+                            {
+                                String[] split = line.Split(',');
 
+                                if (split[0].Contains(userInput))
+                                {
+                                    WriteLine("Please enter the new price:");
+                                    newPrice = ReadLine();
+                                    split[2] = newPrice;
+                                    line = String.Join(",", split);
+                                }
+                            }
+                            lines.Add(line);
+                        }
+                    }
+                    using (StreamWriter writer = new StreamWriter(location, false))
+                    {
+                        foreach (String line in lines)
+                            writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception i)
+            {
+                WriteLine("Whoops that was a mistake", i);
+            }
         }
-
+        
         static void administratorAdd(ref List<Menu> n)
         {
             string[] newItem = new string[3];
@@ -127,7 +170,7 @@ namespace Project3
                 StreamWriter writer = new StreamWriter(location, true);
                 writer.WriteLine(newItem[0] + "," + newItem[1] + "," + newItem[2]);
                 writer.Dispose();
-                WriteLine("Item added");
+                WriteLine("Item added...");
             }
             catch (Exception i)
             {
@@ -137,8 +180,19 @@ namespace Project3
 
         static void administartorOverride(ref List<Orders> i)
         {
-            foreach(Orders in i)
+            int userInput;
+            int userEdit;
+            List<Orders> collection = new List<Orders>();
+            WriteLine("Customer Name, Burger Order, Fry Order, Shake Order, Package Order");
+            foreach(Orders s in collection)
+            {
+                WriteLine($"{s.customerName}{s.burger}{s.fries}{s.shakes}{s.package}");
+            }
             WriteLine("Which customer are you needing to edit");
+            userInput = Convert.ToInt32(ReadLine());
+
+ 
+
         }
         
         //method to determine if it is a customer or a admin attempting to login
