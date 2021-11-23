@@ -16,6 +16,7 @@ namespace Project3
             //declaring and intializing variables and the Orders list
             List<Orders> order = new List<Orders>();
             List<Menu> menu = new List<Menu>();
+            List<String> lines = new List<String>();
             int admin;
             int edit;
             string burgerMessage;
@@ -30,7 +31,7 @@ namespace Project3
             {
                 if (frontend == 1)
                 {
-                    WriteLine("Are you editing and existing item or adding a new one? Press 1 for editing, 2 for adding, and 3 to exit");
+                    WriteLine("Are you updating an existing item or adding a new one? Press 1 for editing, 2 for adding, and 3 to exit");
                     admin = Convert.ToInt32(ReadLine());
                     if (admin == 1)
                     {
@@ -59,6 +60,20 @@ namespace Project3
                    
                 }
             }
+            try
+            {
+                using (TextWriter tw = new StreamWriter("SavedList.txt"))
+                {
+                    foreach (Orders s in order)
+                        tw.WriteLine("\nName: " + s.customerName + ", Burgers: " + s.burger + ", Fries: " + s.fries 
+                            + ", Shakes: " + s.shakes + ", Package: " + s.package);
+                }
+            }
+            catch (Exception i)
+            {
+                WriteLine("Whoops that was a mistake", i);
+            }
+
 
             WriteLine("Is the order correct? 1 for yes and 2 for no");
             edit = Convert.ToInt32(ReadLine());
@@ -96,7 +111,6 @@ namespace Project3
                     $"\n{i.customerName} has a total of which includes tax: ${i.total.ToString("0.00")}");
             }
 
-
             ReadKey();
         }
 
@@ -106,7 +120,6 @@ namespace Project3
             string newPrice;
             List<String> lines = new List<String>();
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
-            string[] linedata = System.IO.File.ReadAllLines(location);
             var menuList = File.ReadLines("Menu.csv").Select(line => new Menu(line)).ToList();
 
             WriteLine("{0,1}{1,10}{2,8}", "ID", "NAME", "PRICE");
@@ -180,9 +193,12 @@ namespace Project3
 
         static void administartorOverride(ref List<Orders> i)
         {
+            string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\SavedList.csv";
+            string nameUpdate;
             int userInput;
             int userEdit;
             List<Orders> collection = new List<Orders>();
+            
             WriteLine("Customer Name, Burger Order, Fry Order, Shake Order, Package Order");
             foreach(Orders s in collection)
             {
@@ -191,7 +207,15 @@ namespace Project3
             WriteLine("Which customer are you needing to edit");
             userInput = Convert.ToInt32(ReadLine());
 
- 
+            WriteLine("What is the new name");
+            nameUpdate = ReadLine();
+            var index = collection.FindIndex(c => c.customerName == nameUpdate);
+
+            foreach (Orders s in collection)
+            {
+                WriteLine($"{s.customerName}{s.burger}{s.fries}{s.shakes}{s.package}");
+            }
+
 
         }
         
