@@ -60,13 +60,15 @@ namespace Project3
                    
                 }
             }
+
+            //can utlizie by having each order saved for future reference for the resturant
             try
             {
                 using (TextWriter tw = new StreamWriter("SavedList.txt"))
                 {
                     foreach (Orders s in order)
                         tw.WriteLine("\nName: " + s.customerName + ", Burgers: " + s.burger + ", Fries: " + s.fries 
-                            + ", Shakes: " + s.shakes + ", Package: " + s.package);
+                            + ", Shakes: " + s.shakes + ", Package: " + s.package +" , Total: " + s.total);
                 }
             }
             catch (Exception i)
@@ -74,10 +76,11 @@ namespace Project3
                 WriteLine("Whoops that was a mistake", i);
             }
 
-
+            //This is being used to see if the cashier needs to edit the order in the event they entered in something wrong such as the name
             WriteLine("Is the order correct? 1 for yes and 2 for no");
             edit = Convert.ToInt32(ReadLine());
 
+            //goes to the edit method
             if(edit == 2)
             {
                 administartorOverride(ref order);
@@ -193,24 +196,35 @@ namespace Project3
 
         static void administartorOverride(ref List<Orders> i)
         {
-            string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\SavedList.csv";
             string nameUpdate;
-            int userInput;
-            int userEdit;
-            List<Orders> collection = new List<Orders>();
+            string userInput;
+
+            //pulls in the the existing list
+            List<Orders> collection = i;
             
+            //displays the name for the user to choose which one needs to be updated
             WriteLine("Customer Name, Burger Order, Fry Order, Shake Order, Package Order");
             foreach(Orders s in collection)
             {
-                WriteLine($"{s.customerName}{s.burger}{s.fries}{s.shakes}{s.package}");
+                WriteLine("\nName: " + s.customerName + ", Burgers: " + s.burger + ", Fries: " + s.fries
+                            + ", Shakes: " + s.shakes + ", Package: " + s.package + " , Total: " + s.total);
             }
-            WriteLine("Which customer are you needing to edit");
-            userInput = Convert.ToInt32(ReadLine());
 
-            WriteLine("What is the new name");
+            WriteLine("Type the customer name you need to edit even if mispelled");
+            userInput = ReadLine();
+            WriteLine("\nWhat is the new name");
             nameUpdate = ReadLine();
-            var index = collection.FindIndex(c => c.customerName == nameUpdate);
 
+            //compares the input of userInput and finds and pulls the customer name to be edited
+            var index = collection.FindIndex(c => c.customerName == userInput);
+
+            //as long as the index is within bounds it will enter allowing for it to be updated
+            if(index != -1)
+            {
+                collection[index] = nameUpdate;
+            }
+
+            //will remove this foreach loop, using it to see if the name will update
             foreach (Orders s in collection)
             {
                 WriteLine($"{s.customerName}{s.burger}{s.fries}{s.shakes}{s.package}");

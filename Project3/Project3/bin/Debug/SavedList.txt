@@ -1,4 +1,2 @@
 
-Name:Tyler, Burgers1, Fries:1, Shakes:0, Package:0
-
-Name:Malid, Burgers0, Fries:1, Shakes:0, Package:0
+Name: Tyler, Burgers: 1, Fries: 0, Shakes: 0, Package: 0 , Total: 5.25447
