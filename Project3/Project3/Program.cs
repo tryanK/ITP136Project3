@@ -16,7 +16,6 @@ namespace Project3
             //declaring and intializing variables and the Orders list
             List<Orders> order = new List<Orders>();
             List<Menu> menu = new List<Menu>();
-            List<String> lines = new List<String>();
             int admin;
             int edit;
             string burgerMessage;
@@ -61,7 +60,7 @@ namespace Project3
                 }
             }
 
-            //can utlizie by having each order saved for future reference for the resturant
+            //can utlizie by having each order saved for future reference for the resturant this is not required but I wanted to work :)
             try
             {
                 using (TextWriter tw = new StreamWriter("SavedList.txt"))
@@ -83,7 +82,7 @@ namespace Project3
             //goes to the edit method
             if(edit == 2)
             {
-                administartorOverride(ref order);
+                administratorOverride(ref order);
             }
             
             //cycling through each of the orders that have been givin, allow the corresponding message to display along with the amount they ordered and their total cost
@@ -174,6 +173,7 @@ namespace Project3
         static void administratorAdd(ref List<Menu> n)
         {
             string[] newItem = new string[3];
+            //the location file will need to be adjusted to run properly
             string location = @"C:\Users\Tyler\Desktop\School\Fall2021\ITP136\ITP136WK15Project3\Project3\Project3\bin\Debug\Menu.csv";
 
             WriteLine("First enter the ID, then name and lastly the price of the item in that order");
@@ -194,7 +194,7 @@ namespace Project3
             }
         }
 
-        static void administartorOverride(ref List<Orders> i)
+        static void administratorOverride(ref List<Orders> i)
         {
             string nameUpdate;
             string userInput;
@@ -219,18 +219,19 @@ namespace Project3
             var index = collection.FindIndex(c => c.customerName == userInput);
 
             //as long as the index is within bounds it will enter allowing for it to be updated
-            if(index != -1)
+            try
             {
-                collection[index] = nameUpdate;
+                if (index != -1)
+                {
+                    Orders x = collection[index];
+                    x.customerName = nameUpdate;
+                }
             }
-
-            //will remove this foreach loop, using it to see if the name will update
-            foreach (Orders s in collection)
+            catch(Exception ex)
             {
-                WriteLine($"{s.customerName}{s.burger}{s.fries}{s.shakes}{s.package}");
+                WriteLine("whoops that was a mistake", ex);
             }
-
-
+            
         }
         
         //method to determine if it is a customer or a admin attempting to login
